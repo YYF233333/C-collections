@@ -1,23 +1,21 @@
 #include <assert.h>
-#include <stdlib.h>
-#include <string.h>
 #include "../export/result.h"
 
-static Result Result_new(int flag, void *val, size_t size) {
+typedef unsigned long long generic;
+
+static Result Result_new(int flag, generic val) {
     Result res;
     res.flag = flag;
-    res.val = malloc(size);
-    assert(res.val);
-    memcpy(res.val, val, size);
+    res.val = val;
     return res;
 }
 
-Result new_Ok(void *val, size_t size) {
-    return Result_new(0, val, size);
+Result new_Ok(generic val) {
+    return Result_new(0, val);
 }
 
-Result new_Err(void *val, size_t size) {
-    return Result_new(1, val, size);
+Result new_Err(generic val) {
+    return Result_new(1, val);
 }
 
 int is_ok(Result res) {
@@ -28,22 +26,18 @@ int is_err(Result res) {
     return res.flag == 1;
 }
 
-void *unwrap(Result res) {
+generic unwrap(Result res) {
     // figure out another way to abort in release env
     assert(res.flag == 0);
     return res.val;
 }
 
-void *unwrap_or(Result res, void *default_val) {
+generic unwrap_or(Result res, generic default_val) {
     return res.flag == 0 ? res.val : default_val;
 }
 
-void *unwrap_or_else(Result res, void *(* closure)(char *message)) {
-    if (res.flag == 0) {
-        return res.val;
-    } else {
-        return closure((char *)res.val);
-    }
+generic unwrap_or_else(Result res, generic (* closure)(char *message)) {
+    return res.flag == 0 ? res.val : closure((char *)res.val);
 }
 
 char *unwrap_err(Result res) {
@@ -51,11 +45,9 @@ char *unwrap_err(Result res) {
     return (char *)res.val;
 }
 
-Result map(Result res, void *(* map)(void *val)) {
+Result map(Result res, generic (* map)(generic val)) {
     if (res.flag == 0) {
-        void *new_val = map(res.val);
-        free(res.val);
-        res.val = new_val;
+        res.val = map(res.val);
     }
     return res;
 }
