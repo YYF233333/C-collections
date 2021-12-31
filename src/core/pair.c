@@ -78,9 +78,9 @@ int is_none(Option opt)      { return is_second(opt); }
  * ---------------------------------
 */
 
-Result new_Ok(generic val)   { return new_first(0, val); }
+Result new_Ok(generic val)   { return new_first(val); }
 
-Result new_Err(generic val)  { return new_second(1, val); }
+Result new_Err(generic val)  { return new_second(val); }
 
 int is_ok(Result res)        { return is_first(res); }
 
