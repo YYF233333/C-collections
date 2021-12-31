@@ -10,7 +10,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
+// TODO: extract panic into function and support format string with va_args
 #ifdef NDEBUG
 #define panic(err) do{fprintf(stderr, "program panicked at %s, " __FILE__ ":%d\n", (err), __LINE__); abort();}while(0)
 #else

@@ -10,5 +10,6 @@
 
 #include "panic.h"
 #include "pair.h"
+//#include "assert.h"
 
 #endif /* Not CORE_H_ */
