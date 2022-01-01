@@ -1,7 +1,5 @@
-#include <assert.h>
 #include <stdlib.h>
-#include "../export/panic.h"
-#include "../export/pair.h"
+#include "../export/core.h"
 #include "../export/buffer.h"
 
 #define MIN_NON_ZERO_CAP(T)         \

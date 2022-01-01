@@ -8,8 +8,8 @@
 #ifndef CORE_H_
 #define CORE_H_
 
-#include "panic.h"
-#include "pair.h"
-//#include "assert.h"
+#include "../include/panic.h"
+#include "../include/pair.h"
+#include "../include/assert.h"
 
 #endif /* Not CORE_H_ */
