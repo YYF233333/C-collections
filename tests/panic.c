@@ -1,6 +1,6 @@
-#include "../export/panic.h"
+#include "../include/panic.h"
 
 int main(void) {
-    char *s = "some specified error";
-    panic(s);
+    char *s = "string";
+    panic("Some specified error: %s, %d", s, 114514);
 }
