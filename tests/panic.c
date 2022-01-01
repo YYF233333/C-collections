@@ -1,6 +1,10 @@
 #include "../include/panic.h"
 
+char *err() {
+    return "error messgae in pointer format %s, %d";
+}
+
 int main(void) {
     char *s = "string";
-    panic("Some specified error: %s, %d", s, 114514);
+    panic(err(), s, 114514);
 }

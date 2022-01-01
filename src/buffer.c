@@ -1,4 +1,3 @@
-#include <assert.h>
 #include <stdlib.h>
 #include "../export/core.h"
 #include "../export/buffer.h"
