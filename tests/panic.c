@@ -6,5 +6,7 @@ char *err() {
 
 int main(void) {
     char *s = "string";
+    unimplemented();
+    unreachable();
     panic(err(), s, 114514);
 }
