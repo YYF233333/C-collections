@@ -12,8 +12,7 @@ enum GrowType {Amortized, Exact};
 
 Buffer Buf_new() {
     // `cap: 0` means "unallocated"
-    Buffer buf = {NULL, 0};
-    return buf;
+    return Buf_from_raw(NULL, 0);
 }
 
 Buffer Buf_with_capacity(uint32_t capacity) {
@@ -35,10 +34,10 @@ static Buffer Buf_allocate(uint32_t capacity, enum AllocInit init) {
     }
 
     if (ptr == NULL) panic(AllocError);
-    Buffer buf = {ptr, capacity};
-    return buf;
+    return Buf_from_raw(ptr, capacity);
 }
 
+// unsafe API
 Buffer Buf_from_raw(void *ptr, uint32_t capacity) {
     Buffer buf = {ptr, capacity};
     return buf;
@@ -76,7 +75,7 @@ void reserve_exact(Buffer *self, uint32_t len, uint32_t additional) {
 
 /// The same as `reserve_exact`, but returns on errors instead of panicking or aborting.
 Result try_reserve_exact(Buffer *self, uint32_t len, uint32_t additional) {
-    if (self->capacity >= len) return Err(CapacityOverflow);
+    if (self->capacity < len) return Err(CapacityOverflow);
     if (additional > self->capacity - len) {
         return grow(self, len, additional, Exact);
     } else {
@@ -95,7 +94,6 @@ static Result grow(Buffer *self, uint32_t len, uint32_t additional, enum GrowTyp
 
     // check if len plus additional overflow u32
     if (UINT32_MAX - len < additional) return Err(CapacityOverflow);
-    
     uint32_t required_cap = len + additional;
 
     uint32_t cap;
