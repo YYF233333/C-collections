@@ -87,3 +87,7 @@ int is_ok(Result res)        { return is_first(res); }
 int is_err(Result res)       { return is_second(res); }
 
 char *unwrap_err(Result res) { return (char *)unwrap_second(res); }
+
+Result map_err(Result res, char *(* map)(char *message)) {
+    return map_second(res, (generic (*)(generic))map);
+}

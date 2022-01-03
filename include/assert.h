@@ -2,7 +2,7 @@
  * Asserts that a boolean expression is true at runtime.
  * This will invoke the panic macro if the provided expression cannot be evaluated to true at runtime.
  *  
- * This header is designed to be exchangeable with std's <assert.h>
+ * This header is designed to be exchangeable with <assert.h> in C std
 */
 #ifndef	_ASSERT_H
 #define _ASSERT_H

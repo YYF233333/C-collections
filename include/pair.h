@@ -29,32 +29,32 @@ struct Pair {
  * ---------------------------------
 */
 
-extern Generic unwrap(Pair opt);
-extern Generic unwrap_or(Pair opt, Generic default_val);
-extern Generic unwrap_or_else(Pair opt, Generic (* closure)());
-extern Pair    map(Pair res, Generic (* map)(Generic val));
+extern Generic unwrap(Pair p);
+extern Generic unwrap_or(Pair p, Generic default_val);
+extern Generic unwrap_or_else(Pair p, Generic (* closure)());
+extern Pair    map(Pair p, Generic (* map)(Generic val));
 
 /* ---------------------------------
  *            Result API
  * ---------------------------------
 */
 
-#define Ok(val)  new_Ok(val)
-#define Err(val) new_Err(val)
+#define Ok(val)  new_Ok((unsigned long long)(val))
+#define Err(val) new_Err((unsigned long long)(val))
 
 extern Result new_Ok(Generic val);
 extern Result new_Err(Generic val);
 extern int    is_ok(Result res);
 extern int    is_err(Result res);
 extern char  *unwrap_err(Result res);
-extern Result map_err(Result res, Generic (* map)(char *message));
+extern Result map_err(Result res, char *(* map)(char *message));
 
 /* ---------------------------------
  *            Option API
  * ---------------------------------
 */
 
-#define Some(val) new_Some(val)
+#define Some(val) new_Some((unsigned long long)(val))
 #define None      new_None()
 
 extern Option new_Some(Generic val);

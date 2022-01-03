@@ -3,7 +3,7 @@
  *  
  * provide a convenient way to end the program and print error message
  * arg err should be a C style string(with '\0' ending), could be format
- * string with va_args
+ * string followed by va_args
 */
 #ifndef PANIC_H_
 #define PANIC_H_
