@@ -24,4 +24,12 @@
 #ifndef STRING_H_
 #define STRING_H_
 
+extern char *String_new();
+extern char *String_from(char *str);
+extern char *String_push(char *self, char c);
+extern char *String_pop(char *self);
+extern char *String_append(char *self, char *other);
+extern char *String_subString(char *self, unsigned start, unsigned end);
+extern void  String_drop(char *self);
+
 #endif /* Not STRING_H_ */
