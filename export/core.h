@@ -13,5 +13,6 @@
 #include "../include/panic.h"
 #include "../include/pair.h"
 #include "../include/assert.h"
+#include "../include/iterator.h"
 
 #endif /* Not CORE_H_ */
