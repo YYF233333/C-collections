@@ -5,7 +5,16 @@
 #include "../../include/core/panic.h"
 #include "../../include/core/logger.h"
 
-struct Logger _logger = {
+const static char *SET_LOGGER_ERROR = 
+    "attempted to set a logger after the logging system was already initialized";
+const static char *LEVEL_PARSE_ERROR =
+    "attempted to convert a string that doesn't match an existing log level";
+
+const static char *log_level_names[6] = 
+    {"OFF", "FATAL", "ERROR", "WARN", "INFO", "DEBUG"};
+
+
+Logger _logger = {
     .enabled = NULL,
     .log = NULL,
     .flush = NULL
@@ -15,13 +24,6 @@ Logger *logger = &_logger;
 LoggerState logger_state = Uninitialized;
 static Level max_level = OFF;
 static FILE *output_stream = NULL;
-
-static char *log_level_names[6] = {"OFF", "FATAL", "ERROR", "WARN", "INFO", "DEBUG"};
-
-static char *SET_LOGGER_ERROR = "attempted to set a logger after the logging system \
-                                 was already initialized";
-static char *LEVEL_PARSE_ERROR =
-    "attempted to convert a string that doesn't match an existing log level";
 
 bool Logger_enabled(const char *target, Level level) {
     return level <= max_level;
@@ -39,7 +41,10 @@ void Logger_log(const char *target, Level level, char *payload, ...) {
 void Logger_flush() {}
 
 void Logger_init(FILE *stream) {
+    // panicked at reinitialization
     if (logger_state == Initialized) panic(SET_LOGGER_ERROR);
+
+    // set max log level
     char *log_level = getenv("LOG_LEVEL");
     if (log_level == NULL) max_level = OFF;
     else {
@@ -50,9 +55,12 @@ void Logger_init(FILE *stream) {
             }
         }
     }
+    // register logger function
     _logger.enabled = Logger_enabled;
     _logger.log = Logger_log;
     _logger.flush = Logger_flush;
+    // set output stream
     output_stream = (stream == NULL) ? stdout : stream;
+    
     logger_state = Initialized;
 }
