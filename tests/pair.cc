@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <gtest/gtest.h>
-#include "../include/pair.h"
+#include "../export/core.h"
 
 TEST(Pair, Unwrap) {
     Pair p = Ok(1);

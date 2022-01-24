@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../include/panic.h"
+#include "../export/core.h"
 
 TEST(Panic, Normal) {
     EXPECT_DEATH(panic(""), "");

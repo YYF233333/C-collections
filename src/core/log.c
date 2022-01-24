@@ -11,10 +11,10 @@ struct Logger _logger = {
     .flush = NULL
 };
 
-Logger logger = &_logger;
+Logger *logger = &_logger;
 LoggerState logger_state = Uninitialized;
-static LevelFilter max_level = OFF;
-static FILE *output_file = NULL;
+static Level max_level = OFF;
+static FILE *output_stream = NULL;
 
 static char *log_level_names[6] = {"OFF", "FATAL", "ERROR", "WARN", "INFO", "DEBUG"};
 
@@ -31,21 +31,21 @@ void Logger_log(const char *target, Level level, char *payload, ...) {
     if (level < 0 || level > 5) panic(LEVEL_PARSE_ERROR);
     va_list args;
     va_start(args, payload);
-    fprintf(output_file, log_level_names[level]);
-    vfprintf(output_file, payload, args);
-    fprintf(output_file, "\n");
+    fprintf(output_stream, log_level_names[level]);
+    vfprintf(output_stream, payload, args);
+    fprintf(output_stream, "\n");
 }
 
 void Logger_flush() {}
 
-void Logger_init() {
+void Logger_init(FILE *stream) {
     if (logger_state == Initialized) panic(SET_LOGGER_ERROR);
     char *log_level = getenv("LOG_LEVEL");
     if (log_level == NULL) max_level = OFF;
     else {
         for (int i = 0; i < 6; i++) {
             if (strcmp(log_level_names[i], log_level) == 0) {
-                max_level = i;
+                max_level = (Level)i;
                 break;
             }
         }
@@ -53,5 +53,6 @@ void Logger_init() {
     _logger.enabled = Logger_enabled;
     _logger.log = Logger_log;
     _logger.flush = Logger_flush;
+    output_stream = (stream == NULL) ? stdout : stream;
     logger_state = Initialized;
 }

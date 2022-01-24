@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../include/assert.h"
+#include "../export/core.h"
 
 TEST(Assert, Succeed) {
     assert(true);
