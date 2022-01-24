@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
-#include "../../include/panic.h"
+#include "../../include/core/panic.h"
 
 void _panic(const char *const file, unsigned line, const char *const format, ...) {
     va_list args;

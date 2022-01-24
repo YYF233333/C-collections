@@ -1,5 +1,5 @@
-#include "../../include/panic.h"
-#include "../../include/pair.h"
+#include "../../include/core/panic.h"
+#include "../../include/core/pair.h"
 
 typedef unsigned long long generic;
 

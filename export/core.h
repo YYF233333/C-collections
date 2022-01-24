@@ -10,8 +10,9 @@
 #ifndef CORE_H_
 #define CORE_H_
 
-#include "../include/panic.h"
-#include "../include/pair.h"
-#include "../include/assert.h"
+#include "../include/core/panic.h"
+#include "../include/core/pair.h"
+#include "../include/core/assert.h"
+#include "../include/core/log.h"
 
 #endif /* Not CORE_H_ */
