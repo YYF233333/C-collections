@@ -4,6 +4,7 @@ add_library(${PROJECT_NAME} STATIC
     pair.c
     panic.c
     log.c
+    rc.c
 )
 
 add_library(collections::core ALIAS ${PROJECT_NAME})

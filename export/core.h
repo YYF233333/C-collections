@@ -14,5 +14,6 @@
 #include "../include/core/pair.h"
 #include "../include/core/assert.h"
 #include "../include/core/log.h"
+#include "../include/core/rc.h"
 
 #endif /* Not CORE_H_ */
