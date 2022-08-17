@@ -1,12 +1,12 @@
+#include "buffer.h"
 #include <stdlib.h>
-#include "../export/core.h"
-#include "../include/buffer.h"
+#include "core.h"
 
 #define CapacityOverflow "capacity overflow"
 #define AllocError "failed to alloc enough memory"
 
-enum AllocInit {Uninitialized, Zeroed};
-enum GrowType {Amortized, Exact};
+enum AllocInit { Uninitialized, Zeroed };
+enum GrowType { Amortized, Exact };
 
 Buffer Buf_new() {
     // `cap: 0` means "unallocated"
@@ -23,7 +23,7 @@ Buffer Buf_with_capacity_zeroed(uint32_t capacity) {
 
 // unsafe API
 Buffer Buf_from_raw(void *ptr, uint32_t capacity) {
-    Buffer buf = {ptr, capacity};
+    Buffer buf = { ptr, capacity };
     return buf;
 }
 
@@ -32,9 +32,14 @@ static Buffer Buf_allocate(uint32_t capacity, enum AllocInit init) {
     // there is no way to trigger capacity overflow
     void *ptr;
     switch (init) {
-        case Uninitialized: ptr = malloc(capacity); break;
-        case Zeroed: ptr = calloc(capacity, 1); break;
-        default: panic("Undefined AllocInit Type");
+        case Uninitialized:
+            ptr = malloc(capacity);
+            break;
+        case Zeroed:
+            ptr = calloc(capacity, 1);
+            break;
+        default:
+            panic("Undefined AllocInit Type");
     }
 
     if (ptr == NULL) panic(AllocError);
@@ -58,17 +63,20 @@ void reserve_exact(Buffer *self, uint32_t len, uint32_t additional) {
     handle_reserve(try_reserve_in(self, len, additional, Exact));
 }
 
-/// The same as `reserve`, but returns on errors instead of panicking or aborting.
+/// The same as `reserve`, but returns on errors instead of panicking or
+/// aborting.
 Result try_reserve(Buffer *self, uint32_t len, uint32_t additional) {
     return try_reserve_in(self, len, additional, Amortized);
 }
 
-/// The same as `reserve_exact`, but returns on errors instead of panicking or aborting.
+/// The same as `reserve_exact`, but returns on errors instead of panicking or
+/// aborting.
 Result try_reserve_exact(Buffer *self, uint32_t len, uint32_t additional) {
     return try_reserve_in(self, len, additional, Exact);
 }
 
-static Result try_reserve_in(Buffer *self, uint32_t len, uint32_t additional, enum GrowType type) {
+static Result try_reserve_in(Buffer *self, uint32_t len, uint32_t additional,
+                             enum GrowType type) {
     if (self->capacity < len) return Err(CapacityOverflow);
     if (additional > self->capacity - len) {
         return grow(self, len, additional, type);
@@ -85,16 +93,17 @@ void shrink_to(Buffer *self, uint32_t amount) {
         // no memory allocated, capacity is already zero
         return Ok(NULL);
     }
-    
+
     void *ptr = realloc(self->ptr, amount);
     if (ptr == NULL) handle_reserve(Err(AllocError));
-    
+
     self->ptr = ptr;
     self->capacity = amount;
 }
 
 #define MAX(a, b) ((a) >= (b) ? (a) : (b))
-static Result grow(Buffer *self, uint32_t len, uint32_t additional, enum GrowType type) {
+static Result grow(Buffer *self, uint32_t len, uint32_t additional,
+                   enum GrowType type) {
     // This is ensured by the calling contexts.
     assert(additional > 0);
     assert(type == Amortized || type == Exact);
@@ -106,7 +115,8 @@ static Result grow(Buffer *self, uint32_t len, uint32_t additional, enum GrowTyp
     uint32_t cap;
     if (type == Amortized) {
         // This guarantees exponential growth.
-        cap = (self->capacity > UINT32_MAX/2) ? UINT32_MAX : self->capacity * 2;
+        cap =
+            (self->capacity > UINT32_MAX / 2) ? UINT32_MAX : self->capacity * 2;
         cap = MAX(cap, required_cap);
     } else {
         cap = required_cap;

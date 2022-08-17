@@ -1,0 +1,12 @@
+cmake_minimum_required(VERSION 3.5)
+project(test)
+set(CMAKE_CXX_FLAGS "-lgtest -lgtest_main")
+include_directories(${CMAKE_SOURCE_DIR}/../export)
+include_directories(${CMAKE_SOURCE_DIR}/../include)
+
+set(CMAKE_CXX_STANDARD 11)
+add_executable(test_assert assert.cc)
+add_executable(test_log log.cc)
+add_executable(test_pair pair.cc)
+add_executable(test_panic panic.cc)
+add_executable(test_rc rc.cc)

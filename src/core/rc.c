@@ -1,14 +1,12 @@
 #include <limits.h>
-#include "../../export/core.h"
+#include "core.h"
 
 Rc Rc_new(void (*free)(const Rc *)) {
-    Rc rc = {free, 1};
+    Rc rc = { free, 1 };
     return rc;
 }
 
-unsigned Rc_count(Rc self) {
-    return self.count;
-}
+unsigned Rc_count(Rc self) { return self.count; }
 
 void Rc_inc_count(Rc *self) {
     assert(self);

@@ -1,7 +1,7 @@
+#include <gtest/gtest.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <gtest/gtest.h>
-#include "../export/core.h"
+#include "core.h"
 
 TEST(Pair, Unwrap) {
     Pair p = Ok(1);
@@ -20,9 +20,7 @@ TEST(Pair, UnwrapOr) {
     EXPECT_EQ(unwrap_or(q, 0), 0);
 }
 
-unsigned long long cl() {
-    return 123;
-}
+unsigned long long cl() { return 123; }
 
 TEST(Pair, UnwrapOrElse) {
     Pair p = Ok(1);
@@ -31,9 +29,7 @@ TEST(Pair, UnwrapOrElse) {
     EXPECT_EQ(unwrap_or_else(q, cl), 123);
 }
 
-unsigned long long map_cl(unsigned long long val) {
-    return val + 1;
-}
+unsigned long long map_cl(unsigned long long val) { return val + 1; }
 
 TEST(Pair, Map) {
     Pair p = Ok(1);
@@ -42,9 +38,7 @@ TEST(Pair, Map) {
     EXPECT_STREQ(unwrap_err(map(q, map_cl)), "err");
 }
 
-char *err_cl(char *message) {
-    return "message processed";
-}
+char *err_cl(char *message) { return "message processed"; }
 
 TEST(Pair, MapErr) {
     Result err = Err("message");

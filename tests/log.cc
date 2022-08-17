@@ -1,19 +1,17 @@
+#include <gtest/gtest.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <gtest/gtest.h>
 #include "../export/core.h"
 
 class Log : public ::testing::Test {
-    protected:
-        void SetUp() override {
-            setenv("LOG_LEVEL", "WARN", 1);
-            if (logger_state == Uninitialized) Logger_init(stdout);
-        }
+protected:
+    void SetUp() override {
+        setenv("LOG_LEVEL", "WARN", 1);
+        if (logger_state == Uninitialized) Logger_init(stdout);
+    }
 };
 
-TEST_F(Log, Logging) {
-    LOG(INFO, "test logging %d", 114514);
-}
+TEST_F(Log, Logging) { LOG(INFO, "test logging %d", 114514); }
 
 TEST_F(Log, Enabled) {
     ASSERT_EQ(LOG_ENABLED(WARN), true);
@@ -29,5 +27,5 @@ TEST_F(Log, Macros) {
 }
 
 TEST_F(Log, Reinit) {
-    EXPECT_DEATH({Logger_init(stderr);}, "");
+    EXPECT_DEATH({ Logger_init(stderr); }, "");
 }
